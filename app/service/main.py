@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any
@@ -9,6 +9,7 @@ from plan_kept.store import FirestoreWorkspaceStore,MemoryWorkspaceStore
 from service.hardening_routes import build_hardening_router
 from service.routes import build_router
 from service.runtime import build_runtime
+from service.scheduler_routes import build_scheduler_router
 from spine.http_trace import install_http_tracing
 
 PROJECT=os.environ.get("GOOGLE_CLOUD_PROJECT","local")
@@ -21,6 +22,7 @@ clock,wake_scheduler=build_runtime(PROJECT,USE_FIRESTORE)
 app=FastAPI(title="Plan Kept",description="Privacy-aware promise-to-reality partner for existing student supports.",version="0.2.0")
 trace_status=install_http_tracing(app,PROJECT,"plan-kept")
 app.include_router(build_router(workspace_store));app.include_router(build_hardening_router(workspace_store,wake_scheduler,clock))
+app.include_router(build_scheduler_router(workspace_store,wake_scheduler))
 WEB=Path(__file__).resolve().parent.parent/"web";app.mount("/static",StaticFiles(directory=WEB),name="static")
 
 @app.get("/health")
@@ -32,4 +34,3 @@ def index():return FileResponse(WEB/"index.html")
 def judges():return FileResponse(WEB/"hardening.html")
 @app.get("/judges/architecture",include_in_schema=False)
 def architecture_brief():return FileResponse(WEB/"judges.html")
-

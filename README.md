@@ -1,4 +1,4 @@
-# Plan Kept
+﻿# Plan Kept
 
 > The plan promised it. Was it there in practice?
 
@@ -78,7 +78,7 @@ Open `/`, `/judges`, `/api/proof`, `/api/hardening/proof`, `/api/research`, `/ap
 
 Current local baseline on August 16, 2026:
 
-- `86 passed`
+- `91 passed`
 - `10/10` static accessibility checks
 - HTTP acceptance and deployed proof are refreshed in [VALIDATION_EVIDENCE.md](VALIDATION_EVIDENCE.md)
 
@@ -119,4 +119,19 @@ No school, agency, family, researcher, source publisher, or prior-art vendor end
 ## August 16 hardening
 
 Plan Kept now supports participant sharing changes and withdrawal, invalidates derived synthesis after consent changes, gates role views with demo tokens, visibly quarantines instruction-shaped input, schedules an exactly-once seven-day follow-up, and emits Cloud Trace correlation. Demo tokens are not production identity and are explicitly labelled as such.
+
+## Findings and learnings
+
+- Collaboration is not consensus generation: disagreement becomes a precise clarification rather than a credibility score.
+- Privacy remains changeable after submission; withdrawal and sharing changes invalidate derived synthesis.
+- Memory is safer as bounded preferences, promises, evidence, decisions and actions than raw transcript replay.
+- This fictional scenario proves privacy and workflow behavior, not prevention, legal compliance or school usability.
+
+## Originality and reused-code disclosure
+
+Plan Kept's workflow, consent semantics, role views, UI, fixtures, evaluation, failure laboratory, research and submission materials were created for this contest-period submission. Generic clock, wake, observability, quarantine and verifier primitives were adapted from the entrant's Day Three contest-period production spine. They are disclosed in app/spine/__init__.py and independently tested here.
+
+## Automated background execution
+
+The deployed plan-kept-wake-scan Cloud Scheduler job calls the internal wake worker every minute with a Google-signed OIDC token from the dedicated agent-wake-scheduler service account. The application verifies audience, issuer, email and email verification before scanning. Unauthenticated calls return HTTP 401. The worker claims Firestore wakes transactionally, executes idempotent actions, bounds retries and retains dead letters. Reproduce or update the job with app/infra/provision_scheduler.ps1 after deployment.
 
