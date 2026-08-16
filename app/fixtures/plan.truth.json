@@ -1,0 +1,7 @@
+{
+  "fixture": "Riverlight School synthetic support plan",
+  "real_record": false,
+  "expected_support_quotes": 4,
+  "expected_invented_quotes": 0,
+  "note": "Human-authored truth set for repeatable extraction checks; not a claim about real records."
+}

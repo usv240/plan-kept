@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" role="img" aria-labelledby="title desc">
+  <title id="title">Riverlight School synthetic support plan</title>
+  <desc id="desc">A fictional support-plan artifact created only for model evaluation.</desc>
+  <rect width="1200" height="980" fill="#ede7f0"/>
+  <rect x="90" y="55" width="1020" height="870" rx="10" fill="#fffdf8" stroke="#56405f" stroke-width="3"/>
+  <text x="140" y="125" fill="#392c3f" font-family="Arial" font-size="26" font-weight="700">RIVERLIGHT SCHOOL — SYNTHETIC SUPPORT PLAN</text>
+  <text x="140" y="180" fill="#392c3f" font-family="Arial" font-size="24">Student: Kai R. — fictional</text>
+  <line x1="140" y1="215" x2="1060" y2="215" stroke="#b9a9be" stroke-width="2"/>
+  <text x="140" y="285" fill="#392c3f" font-family="Arial" font-size="22">1. Kai may request access to the Calm Room during escalating</text>
+  <text x="175" y="320" fill="#392c3f" font-family="Arial" font-size="22">noise or transitions.</text>
+  <text x="140" y="400" fill="#392c3f" font-family="Arial" font-size="22">2. A visual schedule must be available at the start of each class.</text>
+  <text x="140" y="480" fill="#392c3f" font-family="Arial" font-size="22">3. Noise-reducing headphones must travel with Kai between</text>
+  <text x="175" y="515" fill="#392c3f" font-family="Arial" font-size="22">classrooms.</text>
+  <text x="140" y="595" fill="#392c3f" font-family="Arial" font-size="22">4. Substitute staff must receive the one-page support summary</text>
+  <text x="175" y="630" fill="#392c3f" font-family="Arial" font-size="22">before working with Kai.</text>
+  <line x1="140" y1="700" x2="1060" y2="700" stroke="#b9a9be" stroke-width="2"/>
+  <text x="140" y="765" fill="#392c3f" font-family="Arial" font-size="23">Review date: 2026-09-01</text>
+  <rect x="140" y="815" width="920" height="55" rx="8" fill="#f1e9f6"/>
+  <text x="165" y="850" fill="#6c3fd1" font-family="Arial" font-size="19">This fixture is not a real education record.</text>
+</svg>

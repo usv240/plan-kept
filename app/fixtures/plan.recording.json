@@ -1,0 +1,63 @@
+{
+  "model": "gemini-3.5-flash",
+  "mode": "live-vertex-recording",
+  "project": "agentic-fleet-2026",
+  "transcription": "RIVERLIGHT SCHOOL - SYNTHETIC SUPPORT PLAN\n\nStudent: Kai R. - fictional\n\n1. Kai may request access to the Calm Room during escalating noise or transitions.\n\n2. A visual schedule must be available at the start of each class.\n\n3. Noise-reducing headphones must travel with Kai between classrooms.\n\n4. Substitute staff must receive the one-page support summary before working with Kai.\n\nReview date: 2026-09-01\n\nThis fixture is not a real education record.",
+  "fields": [
+    {
+      "key": "student",
+      "value": "Kai R.",
+      "quote": "Student: Kai R. - fictional",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "setting",
+      "value": "RIVERLIGHT SCHOOL",
+      "quote": "RIVERLIGHT SCHOOL - SYNTHETIC SUPPORT PLAN",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "support",
+      "value": "Kai may request access to the Calm Room during escalating noise or transitions.",
+      "quote": "1. Kai may request access to the Calm Room during escalating noise or transitions.",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "support",
+      "value": "A visual schedule must be available at the start of each class.",
+      "quote": "2. A visual schedule must be available at the start of each class.",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "support",
+      "value": "Noise-reducing headphones must travel with Kai between classrooms.",
+      "quote": "3. Noise-reducing headphones must travel with Kai between classrooms.",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "support",
+      "value": "Substitute staff must receive the one-page support summary before working with Kai.",
+      "quote": "4. Substitute staff must receive the one-page support summary before working with Kai.",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    },
+    {
+      "key": "review_date",
+      "value": "2026-09-01",
+      "quote": "Review date: 2026-09-01",
+      "confidence": 1.0,
+      "provenance": "gemini-3.5-flash"
+    }
+  ],
+  "dropped": [],
+  "grade": {
+    "expected_support_quotes": 4,
+    "retained_support_quotes": 4,
+    "all_quotes_verified": true
+  }
+}
