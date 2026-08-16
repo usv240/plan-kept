@@ -4,7 +4,7 @@
 
 | Gate | Result |
 |---|---:|
-| Workflow, API, quote-reader, privacy, security, wake, and guided-navigation tests | 95 passed |
+| Workflow, API, quote-reader, privacy, security, and wake tests | 91 passed |
 | Static accessibility checks | 10/10 |
 | Executable HTTP demonstration | 8/8 |
 | Foundational privacy-and-safety proof | 10/10 |
@@ -19,7 +19,7 @@
 ## Deployed verification
 
 - Public service: https://plan-kept-109051079423.us-central1.run.app
-- Revision: `plan-kept-00008-hj7`.
+- Revision: `plan-kept-00009-jqb`.
 - `/health`: `firestore`, `gemini-3.5-flash`, `qualified-human-only` decisions, transactional wakes, token-gated demo roles, active Cloud Trace.
 - Public acceptance: `8/8`; foundational proof: `10/10`; hardening proof: `9/9`; landing, verification console, and architecture brief: HTTP 200.
 

@@ -1,4 +1,4 @@
-# Plan Kept
+﻿# Plan Kept
 
 > The plan promised it. Was it there in practice?
 
@@ -11,10 +11,6 @@ repair back to the student’s lived experience.
 **Google model:** Gemini 3.5 Flash through Vertex AI / Google Gen AI SDK  
 **Google Cloud:** Cloud Run package plus Firestore-compatible bounded memory  
 **Data:** The school, student, family, plan, responses, records, staff, and actions are fictional.
-
-## Fastest judge path
-
-Open the [state-aware guided demo](https://plan-kept-109051079423.us-central1.run.app/?guide=1). It explains why each step matters, highlights the exact next control, follows the real workflow state, and keeps every approval or consequential action under user control. The judge-proof view remains one click away throughout.
 
 ## The narrow contribution
 
@@ -82,7 +78,7 @@ Open `/`, `/judges`, `/api/proof`, `/api/hardening/proof`, `/api/research`, `/ap
 
 Current local baseline on August 16, 2026:
 
-- `95 passed`
+- `91 passed`
 - `10/10` static accessibility checks
 - HTTP acceptance and deployed proof are refreshed in [VALIDATION_EVIDENCE.md](VALIDATION_EVIDENCE.md)
 
