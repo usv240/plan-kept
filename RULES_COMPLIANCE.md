@@ -9,7 +9,7 @@
 | Leads and asks clarifying questions | Role-specific questions plus conflict-targeted clarification | Pass |
 | Captures feedback and adapts | Preferences, revision history, sharing changes, withdrawal and synthesis invalidation | Pass |
 | Persistent bounded memory | Preferences, promises, decisions, actions and follow-up; no transcript replay | Pass |
-| Working public access | Public product, verification console, scoped role endpoint and proofs | Pass |
+| Working public access | Public product, fictional workspace, scoped role endpoint and proofs | Pass |
 | Public repository | https://github.com/usv240/plan-kept | Pass |
 | Reproducible setup and diagram | README, Dockerfile, deploy script, indexes, `docs/architecture.svg` | Pass |
 | Privacy and authority | Token-gated demo views, injection quarantine, no truth/risk/legal/discipline score | Pass |

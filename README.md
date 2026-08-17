@@ -1,4 +1,4 @@
-﻿# Plan Kept
+# Plan Kept
 
 > The plan promised it. Was it there in practice?
 
@@ -11,6 +11,12 @@ repair back to the student’s lived experience.
 **Google model:** Gemini 3.5 Flash through Vertex AI / Google Gen AI SDK  
 **Google Cloud:** Cloud Run package plus Firestore-compatible bounded memory  
 **Data:** The school, student, family, plan, responses, records, staff, and actions are fictional.
+
+## Public operational sandbox
+
+The public Cloud Run service is intentionally signup-free for hackathon evaluation and accepts fictional synthetic inputs only. It is no longer limited to one fixture: users can create multiple durable promise-review workspaces, supply a fictional plan with exact-quoted promises, name fictional participants, enter four separate perspectives, and complete clarification, human repair approval, and participant follow-up. `GET/POST /api/pilot/workspaces` provides a typed integration surface; `/api/pilot/readiness` states the boundary.
+
+The deterministic sample remains one click away. Public global reset is disabled, new workspace IDs use the complete random UUID, internal scheduler workers remain OIDC-authenticated, and the customer UI contains no judge-only routes. Real education records require a separately protected school deployment with identity, authorization, consent, disclosure, retention, and deletion controls.
 
 ## The narrow contribution
 
@@ -54,7 +60,7 @@ prove prevention, establish legal compliance, or justify applying clinical resul
 
 | Layer | Running implementation |
 |---|---|
-| Interface | Responsive role-aware workspace and judge brief with light/dark themes |
+| Interface | Responsive role-aware queue with custom fictional intake and light/dark themes |
 | API | FastAPI bounded state machine with role-filtered views |
 | Partner | Questions, sharing, revision, synthesis, clarification, repair, follow-up |
 | Model | Gemini 3.5 Flash quote-grounded plan reader; deterministic replay for tests |
@@ -74,11 +80,11 @@ python -m uvicorn service.main:app --host 127.0.0.1 --port 8000
 python scripts/demo_flow.py --url http://127.0.0.1:8000
 ```
 
-Open `/`, `/judges`, `/api/proof`, `/api/hardening/proof`, `/api/research`, `/api/conformance`, and `/docs`.
+Open `/`, `/api/pilot/readiness`, `/api/proof`, `/api/hardening/proof`, `/api/research`, `/api/conformance`, and `/docs`.
 
-Current local baseline on August 16, 2026:
+Current local baseline on August 17, 2026:
 
-- `91 passed`
+- `96 passed`
 - `10/10` static accessibility checks
 - HTTP acceptance and deployed proof are refreshed in [VALIDATION_EVIDENCE.md](VALIDATION_EVIDENCE.md)
 

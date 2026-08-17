@@ -23,7 +23,7 @@ class ConfirmationRequest(BaseModel):
  experienced:bool
  note:str=Field(min_length=2,max_length=800)
 
-def build_router(store:WorkspaceStore)->APIRouter:
+def build_router(store:WorkspaceStore,allow_global_reset:bool=False)->APIRouter:
  router=APIRouter(prefix="/api",tags=["plan-kept"])
  def require(workspace_id):
   workspace=store.get(workspace_id)
@@ -64,7 +64,9 @@ def build_router(store:WorkspaceStore)->APIRouter:
  def full_demo():
   workspace=run_full_demo();store.put(workspace);return workspace
  @router.post("/reset")
- def reset():store.clear();return {"ok":True}
+ def reset():
+  if not allow_global_reset:raise HTTPException(status_code=403,detail="global reset is disabled in this deployment")
+  store.clear();return {"ok":True}
  @router.get("/research")
  def research():
   workspace=create_workspace();return {"sources":list(workspace["sources"].values()),"prior_art":[{"title":"RecordHQ","url":"https://recordhq.co.uk/","boundary":"pupil/staff debrief, actions, notifications, analytics"},{"title":"Cairn","url":"https://cairn.school/","boundary":"conversational incident reporting, follow-up, and analytics"},{"title":"MangoApps restraint/seclusion template","url":"https://www.mangoapps.com/templates/forms/seclusion-and-restraint-incident-reporting-and-debrief-form","boundary":"incident documentation, debrief, prevention, and follow-up"}],"our_boundary":"promise-to-reality ledger for existing supports, participant-controlled sharing, conflict without truth scoring, and lived-experience repair confirmation","claim_boundary":"Research supports the problem and collaborative/trauma-informed principles. It does not validate Plan Kept or prove incident prevention."}

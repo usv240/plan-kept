@@ -49,10 +49,10 @@ QUESTIONS={
 
 def _iso(moment):return moment.astimezone(timezone.utc).isoformat().replace("+00:00","Z")
 def _append(workspace,actor,action,detail,status="complete",visible_to=None):
- workspace["timeline"].append({"sequence":len(workspace["timeline"])+1,"at":_iso(BASE_TIME+timedelta(minutes=len(workspace["timeline"])*6)),"actor":actor,"action":action,"detail":detail,"status":status,"visible_to":visible_to or ["facilitator","auditor"]})
+ workspace["timeline"].append({"sequence":len(workspace["timeline"])+1,"at":_iso(datetime.now(timezone.utc) if workspace.get("clock_mode")=="realtime" else BASE_TIME+timedelta(minutes=len(workspace["timeline"])*6)),"actor":actor,"action":action,"detail":detail,"status":status,"visible_to":visible_to or ["facilitator","auditor"]})
 
 def create_workspace():
- workspace={"workspace_id":f"pk-{uuid4().hex[:8]}","synthetic":True,"status":"plan_loaded","student":{"display_name":"Kai — fictional","record_is_real":False},"plan":{"transcription":PLAN_TRANSCRIPTION,"model":"gemini-3.5-flash","mode":"recorded-replay","promises":deepcopy(PROMISES),"accuracy":{"matched":4,"total":4,"invented":0}},"participants":deepcopy(PARTICIPANTS),"questions":deepcopy(QUESTIONS),"responses":[],"ledger":[],"clarifications":[],"decisions":[],"actions":[],"followup":{"status":"not_scheduled"},"sources":deepcopy(SOURCES),"timeline":[],"safety":{"risk_score":None,"diagnosis":None,"legal_conclusion":None,"discipline_recommendation":None,"restraint_recommendation":None,"automatic_plan_change":False,"disclosure":"Plan Kept surfaces implementation evidence and disagreement. Qualified humans decide findings and repair actions."}}
+ workspace={"workspace_id":f"pk-{uuid4().hex}","synthetic":True,"origin":"sample_fixture","data_class":"synthetic","clock_mode":"simulated","created_at":_iso(BASE_TIME),"case_reference":"Riverlight support review - fictional","status":"plan_loaded","student":{"display_name":"Kai — fictional","record_is_real":False},"plan":{"transcription":PLAN_TRANSCRIPTION,"model":"gemini-3.5-flash","mode":"recorded-replay","promises":deepcopy(PROMISES),"accuracy":{"matched":4,"total":4,"invented":0}},"participants":deepcopy(PARTICIPANTS),"questions":deepcopy(QUESTIONS),"responses":[],"ledger":[],"clarifications":[],"decisions":[],"actions":[],"followup":{"status":"not_scheduled"},"sources":deepcopy(SOURCES),"timeline":[],"safety":{"risk_score":None,"diagnosis":None,"legal_conclusion":None,"discipline_recommendation":None,"restraint_recommendation":None,"automatic_plan_change":False,"disclosure":"Plan Kept surfaces implementation evidence and disagreement. Qualified humans decide findings and repair actions."}}
  _append(workspace,"Plan reader","Four support promises verified","Each retained promise has an exact quote in the synthetic source plan.")
  return workspace
 
@@ -97,6 +97,12 @@ def synthesize(workspace):
  if workspace["status"]!="perspectives_collected":raise ValueError("all perspective sessions must finish before synthesis")
  usable=[r for r in workspace["responses"] if r["included_in_synthesis"]]
  if any(r["sharing"]=="private" for r in workspace["responses"] if r in usable):raise ValueError("private responses cannot enter synthesis")
+ if workspace.get("origin")=="pilot_input":
+  focus=workspace["plan"]["promises"][0];evidence=[r["response_id"] for r in usable if r["promise_id"]==focus["promise_id"]]
+  workspace["ledger"]=[{"promise_id":focus["promise_id"],"state":"perspectives_collected","summary":"Shared perspectives were collected for facilitator review; the system made no truth decision.","evidence_ids":evidence,"system_truth_decision":None}]+[{"promise_id":row["promise_id"],"state":"unknown","summary":"No focused perspective cycle has been completed for this promise.","evidence_ids":[],"system_truth_decision":None} for row in workspace["plan"]["promises"][1:]]
+  workspace["clarifications"]=[{"clarification_id":"clarify-focus","promise_id":focus["promise_id"],"question":f"What operational evidence can confirm how {focus['title']} was implemented?","reason":"Separate perspectives require qualified human review; the system does not decide who is right.","status":"open","answer":None}]
+  workspace["status"]="clarification_ready";_append(workspace,"Synthesis partner","Perspectives organized without a truth score","Shared accounts were linked to the exact-quoted promise and routed for clarification.",status="waiting")
+  return workspace
  workspace["ledger"]=[
   {"promise_id":"calm_room","state":"conflicting","summary":"Student reports locked access; teacher reports an offer; staff record indicates later availability.","evidence_ids":["r-student","r-teacher","r-aide-log"],"system_truth_decision":None},
   {"promise_id":"visual_schedule","state":"unknown","summary":"No shared response addressed the visual schedule.","evidence_ids":[],"system_truth_decision":None},
@@ -123,6 +129,13 @@ def approve_finding_and_repair(workspace,decision,facilitator):
   {"action_id":"act-substitute","title":"Add access status to the substitute support handoff","owner":"Student support lead — synthetic","due_on":"2026-08-19","status":"approved","approved_by":facilitator.strip()},
   {"action_id":"act-student","title":"Ask Kai whether the repair was available in practice","owner":"Facilitator — synthetic","due_on":"2026-08-23","status":"scheduled","approved_by":facilitator.strip()},
  ]
+ if workspace.get("origin")=="pilot_input":
+  focus=workspace["plan"]["promises"][0]["title"]
+  workspace["actions"]=[
+   {"action_id":"act-access","title":f"Verify {focus} before the next review period","owner":"Operations lead - fictional","due_on":"2026-08-18","status":"approved","approved_by":facilitator.strip()},
+   {"action_id":"act-handoff","title":f"Add {focus} status to the fictional staff handoff","owner":"Support lead - fictional","due_on":"2026-08-19","status":"approved","approved_by":facilitator.strip()},
+   {"action_id":"act-student","title":"Ask the fictional student whether the repair was available in practice","owner":"Facilitator - fictional","due_on":"2026-08-23","status":"scheduled","approved_by":facilitator.strip()},
+  ]
  workspace["followup"]={"status":"scheduled","due_on":"2026-08-23","student_confirmation":None};workspace["status"]="repair_approved"
  _append(workspace,facilitator.strip(),"Finding and repair approved",f"Human selected {decision}; three owned actions were created.")
  return workspace
@@ -138,7 +151,7 @@ def confirm_student_experience(workspace,experienced,note):
  if workspace["status"]!="followup_due":raise ValueError("student follow-up is not due")
  if len(note.strip())<2:raise ValueError("student note is required")
  workspace["followup"].update({"status":"complete","student_confirmation":bool(experienced),"student_note":note.strip()});workspace["actions"][2]["status"]="completed";workspace["status"]="closed"
- _append(workspace,"Kai — fictional","Repair experience recorded",note.strip(),visible_to=["student","facilitator"])
+ _append(workspace,workspace["student"]["display_name"],"Repair experience recorded",note.strip(),visible_to=["student","facilitator"])
  return workspace
 
 def role_view(workspace,role):
