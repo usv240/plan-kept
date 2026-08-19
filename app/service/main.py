@@ -16,6 +16,14 @@ from spine.http_trace import install_http_tracing
 PROJECT=os.environ.get("GOOGLE_CLOUD_PROJECT","local")
 USE_FIRESTORE=os.environ.get("USE_FIRESTORE","").lower() in {"1","true","yes"}
 ALLOW_GLOBAL_RESET=os.environ.get("ALLOW_GLOBAL_RESET","").lower() in {"1","true","yes"}
+GOOGLE_SERVICES=[
+ {"name":"Gemini 3.5 Flash on Vertex AI","role":"Grounded plan extraction with deterministic replay"},
+ {"name":"Google Gen AI SDK","role":"Required Google agent framework"},
+ {"name":"Cloud Run","role":"Public collaborative workspace service"},
+ {"name":"Firestore","role":"Durable workspaces and transactional wake state"},
+ {"name":"Cloud Scheduler","role":"OIDC-authenticated follow-up wake scans"},
+ {"name":"Cloud Trace","role":"End-to-end request observability"},
+]
 if USE_FIRESTORE:
  from google.cloud import firestore
  workspace_store=FirestoreWorkspaceStore(firestore.Client(project=PROJECT));persistence="firestore"
@@ -29,6 +37,6 @@ WEB=Path(__file__).resolve().parent.parent/"web";app.mount("/static",StaticFiles
 
 @app.get("/health")
 def health()->dict[str,Any]:
- return {"ok":True,"project":"plan-kept","google_cloud_project":PROJECT,"persistence":persistence,"synthetic_demo":True,"operating_mode":"public-fictional-sandbox","public_data_policy":"fictional-synthetic-only","global_reset":ALLOW_GLOBAL_RESET,"decisions":"qualified-human-only","model":"gemini-3.5-flash","tracing":trace_status,"durable_wakes":"firestore-transactional" if USE_FIRESTORE else "memory-transactional","simulation_clock":True,"role_views":"token-gated-demo"}
+ return {"ok":True,"project":"plan-kept","google_cloud_project":PROJECT,"persistence":persistence,"synthetic_demo":True,"operating_mode":"public-fictional-sandbox","public_data_policy":"fictional-synthetic-only","global_reset":ALLOW_GLOBAL_RESET,"decisions":"qualified-human-only","model":"gemini-3.5-flash","tracing":trace_status,"durable_wakes":"firestore-transactional" if USE_FIRESTORE else "memory-transactional","simulation_clock":True,"role_views":"token-gated-demo","google_services":GOOGLE_SERVICES}
 @app.get("/",include_in_schema=False)
 def index():return FileResponse(WEB/"index.html")

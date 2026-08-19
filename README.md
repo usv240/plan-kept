@@ -12,6 +12,10 @@ repair back to the student’s lived experience.
 **Google Cloud:** Cloud Run package plus Firestore-compatible bounded memory  
 **Data:** The school, student, family, plan, responses, records, staff, and actions are fictional.
 
+## Live stack proof
+
+The header's **Live stack** control reads `/health` at runtime. It turns green only on a healthy non-local deployment; hover, click, or keyboard focus reveals the services actually used: Gemini 3.5 Flash on Vertex AI, Google Gen AI SDK, Cloud Run, Firestore, Cloud Scheduler, and Cloud Trace. The panel links to the same machine-readable evidence.
+
 ## Public operational sandbox
 
 The public Cloud Run service is intentionally signup-free for hackathon evaluation and accepts fictional synthetic inputs only. It is no longer limited to one fixture: users can create multiple durable promise-review workspaces, supply a fictional plan with exact-quoted promises, name fictional participants, enter four separate perspectives, and complete clarification, human repair approval, and participant follow-up. `GET/POST /api/pilot/workspaces` provides a typed integration surface; `/api/pilot/readiness` states the boundary.

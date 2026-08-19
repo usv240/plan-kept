@@ -1,10 +1,10 @@
 # Plan Kept: Validation Evidence
 
-## Verified locally on August 17, 2026
+## Verified locally on August 18, 2026
 
 | Gate | Result |
 |---|---:|
-| Workflow, API, pilot, quote-reader, privacy, security, and wake tests | 96 passed |
+| Workflow, API, pilot, quote-reader, privacy, security, and wake tests | 99 passed |
 | Static accessibility checks | 10/10 |
 | Executable HTTP demonstration | 8/8 |
 | Foundational privacy-and-safety proof | 10/10 |
@@ -19,8 +19,9 @@
 ## Deployed verification
 
 - Public service: https://plan-kept-109051079423.us-central1.run.app
-- Revision: `plan-kept-00010-6wz`.
-- `/health`: `firestore`, `gemini-3.5-flash`, `qualified-human-only` decisions, transactional wakes, token-gated demo roles, active Cloud Trace.
+- Revision: `plan-kept-00011-x8p`.
+- `/health`: `firestore`, `gemini-3.5-flash`, `qualified-human-only` decisions, transactional wakes, token-gated demo roles, active Cloud Trace, and six-service Google stack inventory.
+- Live-stack proof: homepage, CSS, JavaScript, and health inventory returned HTTP 200; the header control was present and the deployment reported `agentic-fleet-2026`.
 - Public acceptance: `8/8`; foundational proof: `10/10`; hardening proof: `9/9`; customer landing, readiness, and OpenAPI: HTTP 200; retired judge routes: HTTP 404.
 - Live custom-flow proof: workspace `pk-a2156a1b1f954904b0f56da84de8ddc1` retained the supplied fictional promise and participant input, excluded system truth decisions, persisted in the workspace queue, recorded human repair authority, and reached student-confirmed closure. Missing acknowledgement returned HTTP 422; global reset returned HTTP 403.
 
