@@ -46,6 +46,8 @@ def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=Fal
   except ValueError as exc:raise HTTPException(status_code=400,detail=str(exc)) from exc
  @router.get("/workspaces/{workspace_id}/trace")
  def get_workspace_trace(workspace_id:str):return public_action_trace(require(workspace_id),"workspace_id")
+ @router.get("/workspaces/{workspace_id}/autonomy-proof")
+ def get_workspace_autonomy_proof(workspace_id:str):return public_view(require(workspace_id))["autonomy_proof"]
  @router.post("/workspaces/{workspace_id}/autopilot")
  def autopilot(workspace_id:str):return mutate(workspace_id,advance_safe_automation)
  @router.post("/workspaces/{workspace_id}/open-perspectives")

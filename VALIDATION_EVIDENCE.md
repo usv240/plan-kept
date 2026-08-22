@@ -4,7 +4,7 @@
 
 | Gate | Result |
 |---|---:|
-| Workflow, API, pilot, quote-reader, privacy, security, and wake tests | 106 passed |
+| Workflow, API, pilot, quote-reader, privacy, security, and wake tests | 115 passed |
 | Static accessibility checks | 10/10 |
 | Executable HTTP demonstration | 10/10 |
 | Foundational privacy-and-safety proof | 10/10 |
@@ -48,10 +48,19 @@ theme/device/keyboard/screen-reader inspection before any production or impact c
 ## 2026-08-22 live release proof
 
 - Cloud Run revision: `plan-kept-00016-7q7` (100% traffic; max instances 1; concurrency 10).
-- Final local suite: **109 passed**.
+- Final local suite: **115 passed**.
 - Live full workflow: workspace `pk-780820ba153e46e2a121e33efc7e5a25` closed in 10.5 seconds.
 - Live model receipt: `gemini-3.5-flash`; live semantic routing: `gemini-embedding-001`.
 - Executable proof endpoint: **10/10**. Public consent-safe action trace: **12 events** with participant answers excluded.
 - `/api/model-evidence` cites official Vertex AI documentation and states the test-only replay policy.
 - The in-app browser could not connect because the workspace Windows browser helper failed before opening a tab. No visual-browser result is claimed; static UI/accessibility contracts and deployed HTTP behavior were verified.
 - Stakeholder outcomes and bonus publication points remain unclaimed pending real consented evidence/public URLs.
+
+
+## Developer API and cumulative autonomy proof — 2026-08-22
+
+- Final Cloud Run revision: `plan-kept-00020-99l`, 100% traffic.
+- Live external flow: missing key returned HTTP 401; self-service key issuance succeeded; authenticated table-top returned HTTP 201 with `X-RateLimit-Limit: 50` and `X-RateLimit-Remaining: 49`.
+- Derived autonomy receipt: 5 automatic trace events, 2 preserved human-authority events, 0 continue clicks; synthetic table-top injection is explicitly disclosed.
+- Firestore field audit confirmed digests/fingerprints only: no plaintext key and no raw IP.
+- Secret Manager version 1 is pinned, the developer UI and OpenAPI docs returned HTTP 200, and the live health inventory includes Secret Manager.

@@ -151,3 +151,11 @@ Plan Kept's workflow, consent semantics, role views, UI, fixtures, evaluation, f
 
 The deployed plan-kept-wake-scan Cloud Scheduler job calls the internal wake worker every minute with a Google-signed OIDC token from the dedicated agent-wake-scheduler service account. The application verifies audience, issuer, email and email verification before scanning. Unauthenticated calls return HTTP 401. The worker claims Firestore wakes transactionally, executes idempotent actions, bounds retries and retains dead letters. Reproduce or update the job with app/infra/provision_scheduler.ps1 after deployment.
 
+
+## Public developer service
+
+Judges can use the visual sandbox without authentication. Any developer can open **Developer API · 50/day**, generate a key without creating an account, and call the same privacy-bounded partner workflow through `/v1`. The key is displayed once; only an HMAC digest and keyed network fingerprint are stored. Firestore transactions atomically enforce 50 calls per key and originating network per UTC day.
+
+Start with [DEVELOPER_API.md](DEVELOPER_API.md), the live `/docs` contract, or `GET /api/developer`. The public service accepts fictional synthetic data only—never education records. Google recommends Secret Manager for Cloud Run secrets, so `API_KEY_PEPPER` is pinned to Secret Manager version 1: [Cloud Run secret configuration](https://docs.cloud.google.com/run/docs/configuring/services/secrets).
+
+The judge-facing autonomy receipt is derived from the persisted timeline. It reports cumulative partner operations, independently preserved human voices, qualified authority decisions, durable follow-up wakes, and zero operator continue-clicks; `/v1/workspaces/{workspace_id}/autonomy-proof` exposes the classified receipt.
