@@ -59,7 +59,7 @@ theme/device/keyboard/screen-reader inspection before any production or impact c
 
 ## Developer API and cumulative autonomy proof — 2026-08-22
 
-- Final Cloud Run revision: `plan-kept-00021-jks`, 100% traffic.
+- Final Cloud Run revision: `plan-kept-00022-mpw`, 100% traffic.
 - Live external flow: missing key returned HTTP 401; self-service key issuance succeeded; authenticated table-top returned HTTP 201 with `X-RateLimit-Limit: 50` and `X-RateLimit-Remaining: 49`.
 - Derived autonomy receipt: 5 automatic trace events, 2 preserved human-authority events, 0 continue clicks; synthetic table-top injection is explicitly disclosed.
 - Firestore field audit confirmed digests/fingerprints only: no plaintext key and no raw IP.
