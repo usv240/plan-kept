@@ -1,1 +1,30 @@
-{"project":"Plan Kept","category":"The Collaborative Partner","hosted_url":"https://plan-kept-109051079423.us-central1.run.app","judge_url":null,"repository":"https://github.com/usv240/plan-kept","video_url":null,"video_status":"entrant must publish public YouTube or Vimeo video under four minutes","model":{"name":"gemini-3.5-flash","access":"Vertex AI via Google Gen AI SDK","live_evidence":"app/fixtures/plan.recording.json","truth":"app/fixtures/plan.truth.json"},"google_cloud":["Cloud Run","Firestore","Cloud Trace"],"architecture":"docs/architecture.svg","spin_up":"README.md","data":"fictional plan, people and responses; public cited research","reused_code":"disclosed production-spine clock, wake, observability, quarantine and verifier primitives","rules_check":"RULES_COMPLIANCE.md","proof_url":"https://plan-kept-109051079423.us-central1.run.app/api/proof"}
+{
+    "project":  "Plan Kept",
+    "category":  "The Collaborative Partner",
+    "hosted_url":  "https://plan-kept-109051079423.us-central1.run.app",
+    "judge_url":  null,
+    "repository":  "https://github.com/usv240/plan-kept",
+    "video_url":  null,
+    "video_status":  "entrant must publish public YouTube or Vimeo video under four minutes",
+    "model":  {
+                  "name":  "gemini-3.5-flash",
+                  "access":  "Vertex AI via Google Gen AI SDK",
+                  "live_evidence":  "app/fixtures/plan.recording.json",
+                  "truth":  "app/fixtures/plan.truth.json",
+                  "mode":  "live-fail-closed in deployed full workflow; replay only in tests",
+                  "additional_model":  "gemini-embedding-001",
+                  "live_receipt":  "semantic_routing in POST /api/demo/full"
+              },
+    "google_cloud":  [
+                         "Cloud Run",
+                         "Firestore",
+                         "Cloud Trace"
+                     ],
+    "architecture":  "docs/architecture.svg",
+    "spin_up":  "README.md",
+    "data":  "fictional plan, people and responses; public cited research",
+    "reused_code":  "disclosed production-spine clock, wake, observability, quarantine and verifier primitives",
+    "rules_check":  "RULES_COMPLIANCE.md",
+    "proof_url":  "https://plan-kept-109051079423.us-central1.run.app/api/proof",
+    "public_action_trace":  "per-record /trace endpoint with explicit redaction policy"
+}

@@ -45,3 +45,13 @@ theme/device/keyboard/screen-reader inspection before any production or impact c
 - Wake execution infers no student response and sends no external contact.
 - The deployed service reports active Cloud Trace and emits a request trace header.
 
+## 2026-08-22 live release proof
+
+- Cloud Run revision: `plan-kept-00016-7q7` (100% traffic; max instances 1; concurrency 10).
+- Final local suite: **109 passed**.
+- Live full workflow: workspace `pk-780820ba153e46e2a121e33efc7e5a25` closed in 10.5 seconds.
+- Live model receipt: `gemini-3.5-flash`; live semantic routing: `gemini-embedding-001`.
+- Executable proof endpoint: **10/10**. Public consent-safe action trace: **12 events** with participant answers excluded.
+- `/api/model-evidence` cites official Vertex AI documentation and states the test-only replay policy.
+- The in-app browser could not connect because the workspace Windows browser helper failed before opening a tab. No visual-browser result is claimed; static UI/accessibility contracts and deployed HTTP behavior were verified.
+- Stakeholder outcomes and bonus publication points remain unclaimed pending real consented evidence/public URLs.

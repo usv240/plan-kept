@@ -17,8 +17,8 @@ letting AI decide who is truthful, expose private accounts, or change a student�
 | 2:25–2:55 | Answer targeted clarification; named facilitator approves repair |
 | 2:55–3:20 | Inspect owned/due actions; student confirms lived availability |
 | 3:20–3:45 | Show revision memory, proof suite, prior-art boundary, and limitations |
-| 3:45–4:00 | Show Cloud Run, Firestore, Vertex recording, and final promise |
+| 3:45–4:00 | Show Cloud Run, Firestore, live Gemini + Embedding receipts, safe trace, and final promise |
 
-Required release proof: public Cloud Run URL, passing deployed demo, live Gemini recording with
+Required release proof: public Cloud Run URL, passing deployed demo, live fail-closed Gemini + Embedding receipts with
 truth-set report, architecture, public repository, short video, and explicit fictional/no-outcome
 labels.

@@ -4,6 +4,7 @@ from typing import Any
 from fastapi import APIRouter,HTTPException,Query
 from pydantic import BaseModel,Field
 from plan_kept.store import WorkspaceStore
+from spine.public_trace import public_action_trace
 from plan_kept.workflow import advance_safe_automation,answer_clarification,approve_finding_and_repair,advance_followup,collect_demo_perspectives,confirm_student_experience,create_workspace,open_perspectives,public_view,record_response,revise_response,role_view,run_full_demo,synthesize
 
 class ResponseRequest(BaseModel):
@@ -24,7 +25,7 @@ class ConfirmationRequest(BaseModel):
  experienced:bool
  note:str=Field(min_length=2,max_length=800)
 
-def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=False)->APIRouter:
+def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=False,model_runner=None)->APIRouter:
  router=APIRouter(prefix="/api",tags=["plan-kept"])
  def require(workspace_id):
   workspace=store.get(workspace_id)
@@ -43,6 +44,8 @@ def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=Fal
   workspace=require(workspace_id)
   try:return role_view(workspace,role) if role else public_view(workspace)
   except ValueError as exc:raise HTTPException(status_code=400,detail=str(exc)) from exc
+ @router.get("/workspaces/{workspace_id}/trace")
+ def get_workspace_trace(workspace_id:str):return public_action_trace(require(workspace_id),"workspace_id")
  @router.post("/workspaces/{workspace_id}/autopilot")
  def autopilot(workspace_id:str):return mutate(workspace_id,advance_safe_automation)
  @router.post("/workspaces/{workspace_id}/open-perspectives")
@@ -72,7 +75,14 @@ def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=Fal
  def confirm(workspace_id:str,request:ConfirmationRequest):return mutate(workspace_id,lambda w:confirm_student_experience(w,request.experienced,request.note))
  @router.post("/demo/full")
  def full_demo():
-  workspace=run_full_demo();store.put(workspace);return workspace
+  workspace=create_workspace()
+  if model_runner is not None:
+   try:model_runner.apply(workspace)
+   except Exception as exc:raise HTTPException(status_code=503,detail="live model evidence unavailable; no replay substituted") from exc
+  workspace=run_full_demo(workspace);store.put(workspace);return workspace
+ @router.get("/model-evidence")
+ def model_evidence():
+  return {"execution":"POST /api/demo/full returns live, fail-closed model receipts","models":[{"name":"gemini-3.5-flash","purpose":"quote-grounded fictional artifact extraction","docs":"https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-5-flash"},{"name":"gemini-embedding-001","purpose":"semantic evidence routing without truth or authority decisions","docs":"https://docs.cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings"}],"replay_policy":"recorded outputs are test-only; deployed full workflows do not silently substitute them"}
  @router.post("/reset")
  def reset():
   if not allow_global_reset:raise HTTPException(status_code=403,detail="global reset is disabled in this deployment")

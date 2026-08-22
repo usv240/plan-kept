@@ -1,5 +1,7 @@
 # Plan Kept
 
+Release proof: [2026-08-22 release audit](RELEASE_AUDIT_2026-08-22.md) · [bonus ledger](BONUS_SCORE_LEDGER.md) · [real-world validation protocol](EXTERNAL_VALIDATION_PROTOCOL.md) · [live model contract](https://plan-kept-109051079423.us-central1.run.app/api/model-evidence)
+
 > The plan promised it. Was it there in practice?
 
 Plan Kept is a privacy-aware collaborative partner for a qualified school team. It reads an
@@ -71,7 +73,7 @@ prove prevention, establish legal compliance, or justify applying clinical resul
 | Interface | Responsive role-aware queue with custom fictional intake and light/dark themes |
 | API | FastAPI bounded state machine with role-filtered views |
 | Partner | Questions, sharing, revision, synthesis, clarification, repair, follow-up |
-| Model | Gemini 3.5 Flash quote-grounded plan reader; deterministic replay for tests |
+| Model | Gemini 3.5 Flash quote-grounded live plan reader; deterministic replay only for tests |
 | Memory | Structured preferences, plan promises, decisions, actions, and revision history |
 | Persistence | In-memory local adapter; Firestore adapter for Cloud mode |
 | Authority | Qualified facilitator decides findings/repairs; student experience closes the loop |
@@ -99,11 +101,11 @@ Current local baseline on August 17, 2026:
 The external `PYTEST_DISABLE_PLUGIN_AUTOLOAD` setting isolates this repository from an incompatible
 globally installed pytest async plugin; application tests themselves are green.
 
-## Gemini replay and recording
+## Live Gemini evidence and test recording
 
 The committed response was produced by a live Vertex AI Gemini 3.5 Flash call on the fictional plan.
 It retained `4/4` support promises and every retained quote was verified against the transcription.
-The public demo replays that measured fixture deterministically; it does not imply broader accuracy.
+The deployed full workflow reads the fictional fixture live through Vertex AI and fails closed; deterministic replay is test-only and no broader accuracy is claimed.
 
 ```powershell
 $env:GOOGLE_CLOUD_PROJECT="your-project"
