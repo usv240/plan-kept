@@ -154,6 +154,18 @@ def confirm_student_experience(workspace,experienced,note):
  _append(workspace,workspace["student"]["display_name"],"Repair experience recorded",note.strip(),visible_to=["student","facilitator"])
  return workspace
 
+def advance_safe_automation(workspace):
+ """Run partner work until participant input or qualified authority is required."""
+ actions=[]
+ while True:
+  if workspace["status"]=="plan_loaded":
+   open_perspectives(workspace);actions.append("role_sessions_opened");continue
+  if workspace["status"]=="perspectives_collected":
+   synthesize(workspace);actions.append("shared_evidence_synthesized");continue
+  break
+ workspace["last_autonomy_run"]={"actions":actions,"stopped_at":workspace["status"],"waiting_for":{"perspectives_open":"participant_perspectives","clarification_ready":"facilitator_operational_evidence","facilitator_review":"qualified_repair_decision","repair_approved":"scheduled_student_followup","followup_due":"student_experience_confirmation","closed":None}.get(workspace["status"],"unsupported_state")}
+ return actions
+
 def role_view(workspace,role):
  if role not in {"student","family","teacher","aide","facilitator","auditor"}:raise ValueError("unknown role")
  view=public_view(workspace);allowed=[]
@@ -163,7 +175,9 @@ def role_view(workspace,role):
  return view
 
 def public_view(workspace):
- view=deepcopy(workspace);view["metrics"]={"promises":len(workspace["plan"]["promises"]),"perspectives_complete":sum(p["session_status"]=="complete" for p in workspace["participants"]),"conflicts":sum(r["state"]=="conflicting" for r in workspace["ledger"]),"repair_actions":len(workspace["actions"]),"private_responses":sum(r["sharing"]=="private" for r in workspace["responses"]),"ai_truth_decisions":0};return view
+ view=deepcopy(workspace);view["metrics"]={"promises":len(workspace["plan"]["promises"]),"perspectives_complete":sum(p["session_status"]=="complete" for p in workspace["participants"]),"conflicts":sum(r["state"]=="conflicting" for r in workspace["ledger"]),"repair_actions":len(workspace["actions"]),"private_responses":sum(r["sharing"]=="private" for r in workspace["responses"]),"ai_truth_decisions":0}
+ view["autonomy"]={"trigger":"verified support plan","automatic_actions":["open role-specific sessions","synthesize consented evidence","ask targeted clarification","create accountable actions after approval","schedule lived-experience follow-up"],"participation_checkpoints":["participant perspectives","qualified finding and repair decision","student experience confirmation"],"current_wait":None if workspace["status"]=="closed" else (workspace.get("last_autonomy_run") or {}).get("waiting_for","verified_plan"),"last_run_actions":(workspace.get("last_autonomy_run") or {}).get("actions",[]),"complete":workspace["status"]=="closed"}
+ return view
 
 def run_full_demo():
  workspace=create_workspace();open_perspectives(workspace);collect_demo_perspectives(workspace);synthesize(workspace);answer_clarification(workspace,"The access log confirms the room was unavailable until 10:25, and the substitute handoff omitted access status.","Riley Shah, facilitator — synthetic");approve_finding_and_repair(workspace,"implementation_gap","Riley Shah, facilitator — synthetic");advance_followup(workspace);confirm_student_experience(workspace,True,"The Calm Room was unlocked when I asked this time.");return public_view(workspace)

@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 
 from plan_kept.pilot import create_pilot_workspace
 from plan_kept.store import WorkspaceStore
-from plan_kept.workflow import public_view
+from plan_kept.workflow import advance_safe_automation, public_view
 
 
 class PromiseInput(BaseModel):
@@ -59,6 +59,7 @@ def build_pilot_router(store: WorkspaceStore) -> APIRouter:
     def open_workspace(request: PilotWorkspaceRequest) -> dict[str, Any]:
         try:
             workspace = create_pilot_workspace(request.model_dump())
+            advance_safe_automation(workspace)
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
         store.put(workspace)

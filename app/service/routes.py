@@ -1,9 +1,10 @@
 from __future__ import annotations
+from datetime import timedelta
 from typing import Any
 from fastapi import APIRouter,HTTPException,Query
 from pydantic import BaseModel,Field
 from plan_kept.store import WorkspaceStore
-from plan_kept.workflow import answer_clarification,approve_finding_and_repair,advance_followup,collect_demo_perspectives,confirm_student_experience,create_workspace,open_perspectives,public_view,record_response,revise_response,role_view,run_full_demo,synthesize
+from plan_kept.workflow import advance_safe_automation,answer_clarification,approve_finding_and_repair,advance_followup,collect_demo_perspectives,confirm_student_experience,create_workspace,open_perspectives,public_view,record_response,revise_response,role_view,run_full_demo,synthesize
 
 class ResponseRequest(BaseModel):
  participant_id:str
@@ -23,7 +24,7 @@ class ConfirmationRequest(BaseModel):
  experienced:bool
  note:str=Field(min_length=2,max_length=800)
 
-def build_router(store:WorkspaceStore,allow_global_reset:bool=False)->APIRouter:
+def build_router(store:WorkspaceStore,scheduler=None,allow_global_reset:bool=False)->APIRouter:
  router=APIRouter(prefix="/api",tags=["plan-kept"])
  def require(workspace_id):
   workspace=store.get(workspace_id)
@@ -36,18 +37,20 @@ def build_router(store:WorkspaceStore,allow_global_reset:bool=False)->APIRouter:
   store.put(workspace);return public_view(workspace)
  @router.post("/workspaces")
  def open_workspace():
-  workspace=create_workspace();store.put(workspace);return public_view(workspace)
+  workspace=create_workspace();advance_safe_automation(workspace);store.put(workspace);return public_view(workspace)
  @router.get("/workspaces/{workspace_id}")
  def get_workspace(workspace_id:str,role:str|None=Query(default=None)):
   workspace=require(workspace_id)
   try:return role_view(workspace,role) if role else public_view(workspace)
   except ValueError as exc:raise HTTPException(status_code=400,detail=str(exc)) from exc
+ @router.post("/workspaces/{workspace_id}/autopilot")
+ def autopilot(workspace_id:str):return mutate(workspace_id,advance_safe_automation)
  @router.post("/workspaces/{workspace_id}/open-perspectives")
  def perspectives(workspace_id:str):return mutate(workspace_id,open_perspectives)
  @router.post("/workspaces/{workspace_id}/demo-perspectives")
- def demo_perspectives(workspace_id:str):return mutate(workspace_id,collect_demo_perspectives)
+ def demo_perspectives(workspace_id:str):return mutate(workspace_id,lambda w:(collect_demo_perspectives(w),advance_safe_automation(w)))
  @router.post("/workspaces/{workspace_id}/responses")
- def response(workspace_id:str,request:ResponseRequest):return mutate(workspace_id,lambda w:record_response(w,request.participant_id,request.answer,request.sharing,request.skipped))
+ def response(workspace_id:str,request:ResponseRequest):return mutate(workspace_id,lambda w:(record_response(w,request.participant_id,request.answer,request.sharing,request.skipped),advance_safe_automation(w)))
  @router.post("/workspaces/{workspace_id}/responses/{participant_id}/revise")
  def revise(workspace_id:str,participant_id:str,request:RevisionRequest):return mutate(workspace_id,lambda w:revise_response(w,participant_id,request.revised_answer,request.reason))
  @router.post("/workspaces/{workspace_id}/synthesize")
@@ -55,7 +58,14 @@ def build_router(store:WorkspaceStore,allow_global_reset:bool=False)->APIRouter:
  @router.post("/workspaces/{workspace_id}/clarification")
  def clarification(workspace_id:str,request:ClarificationRequest):return mutate(workspace_id,lambda w:answer_clarification(w,request.answer,request.facilitator))
  @router.post("/workspaces/{workspace_id}/repair")
- def repair(workspace_id:str,request:RepairRequest):return mutate(workspace_id,lambda w:approve_finding_and_repair(w,request.decision,request.facilitator))
+ def repair(workspace_id:str,request:RepairRequest):
+  def approve_and_schedule(workspace):
+   approve_finding_and_repair(workspace,request.decision,request.facilitator)
+   if scheduler is not None:
+    wake=scheduler.sleep_for(workspace_id,"student_followup",timedelta(days=7))
+    workspace["followup"]["wake_id"]=wake.wake_id
+   workspace["last_autonomy_run"]={"actions":["student_followup_scheduled"],"stopped_at":"repair_approved","waiting_for":"scheduled_student_followup"}
+  return mutate(workspace_id,approve_and_schedule)
  @router.post("/workspaces/{workspace_id}/followup")
  def followup(workspace_id:str):return mutate(workspace_id,advance_followup)
  @router.post("/workspaces/{workspace_id}/confirm")

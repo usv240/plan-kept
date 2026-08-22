@@ -14,7 +14,6 @@ def post(path, body=None):
 def test_custom_fictional_workspace_completes_with_user_perspectives():
     workspace = post("/api/pilot/workspaces", payload()).json()
     workspace_id = workspace["workspace_id"]
-    post(f"/api/workspaces/{workspace_id}/open-perspectives")
     responses = {
         "student": "I requested the fictional support, but it was unavailable at that moment.",
         "family": "The fictional handoff appeared incomplete.",
@@ -22,7 +21,7 @@ def test_custom_fictional_workspace_completes_with_user_perspectives():
         "aide": "The fictional access record shows availability later in the period.",
     }
     for participant_id, answer in responses.items():
-        post(
+        synthesized = post(
             f"/api/workspaces/{workspace_id}/responses",
             {
                 "participant_id": participant_id,
@@ -31,7 +30,7 @@ def test_custom_fictional_workspace_completes_with_user_perspectives():
                 "skipped": False,
             },
         )
-    synthesized = post(f"/api/workspaces/{workspace_id}/synthesize").json()
+    synthesized = synthesized.json()
     assert synthesized["ledger"][0]["promise_id"] == "promise-1"
     assert synthesized["ledger"][0]["system_truth_decision"] is None
     post(
@@ -43,7 +42,8 @@ def test_custom_fictional_workspace_completes_with_user_perspectives():
         {"decision": "implementation_gap", "facilitator": "Sandbox facilitator - fictional"},
     ).json()
     assert "Quiet workspace access" in repaired["actions"][0]["title"]
-    post(f"/api/workspaces/{workspace_id}/followup")
+    assert repaired["status"] == "repair_approved"
+    post("/api/hardening/advance", {"minutes": 10080})
     closed = post(
         f"/api/workspaces/{workspace_id}/confirm",
         {"experienced": True, "note": "The fictional support was available during review."},

@@ -16,6 +16,10 @@ repair back to the student’s lived experience.
 
 The header's **Live stack** control reads `/health` at runtime. It turns green only on a healthy non-local deployment; hover, click, or keyboard focus reveals the services actually used: Gemini 3.5 Flash on Vertex AI, Google Gen AI SDK, Cloud Run, Firestore, Cloud Scheduler, and Cloud Trace. The panel links to the same machine-readable evidence.
 
+## Autonomy contract and design identity
+
+POST /api/demo/full completes the fictional promise-to-practice cycle in one server request. In the input-driven path, a verified plan automatically opens role-specific sessions; the final consented response automatically triggers synthesis; a qualified repair decision creates a durable seven-day wake; and the workflow returns to the student for outcome evidence. Participant voices and qualified decisions are the purpose of the Collaborative Partner track, not avoidable operator clicks. The UI is a warm, editorial collaboration space with paper-like surfaces and a softer partner-rhythm receipt.
+
 ## Public operational sandbox
 
 The public Cloud Run service is intentionally signup-free for hackathon evaluation and accepts fictional synthetic inputs only. It is no longer limited to one fixture: users can create multiple durable promise-review workspaces, supply a fictional plan with exact-quoted promises, name fictional participants, enter four separate perspectives, and complete clarification, human repair approval, and participant follow-up. `GET/POST /api/pilot/workspaces` provides a typed integration surface; `/api/pilot/readiness` states the boundary.
